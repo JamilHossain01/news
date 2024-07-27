@@ -1,3 +1,4 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -9,9 +10,12 @@ import 'package:news71_app/consts/vars.dart';
 import 'package:news71_app/services/utils.dart';
 import 'package:news71_app/widgets/drawer_widgets.dart';
 import 'package:news71_app/widgets/tabs.dart';
+import 'package:news71_app/widgets/top_trending_widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
+import '../widgets/article.dart';
+import '../widgets/loading_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -29,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final Color color = Utils(context).getColor;
+    final Size size = Utils(context).getScreenSize;
 
     return Scaffold(
       appBar: AppBar(
@@ -169,7 +174,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            )
+            ),
+
+           if(newsType==NewsType.allNews) Expanded(child: ListView.builder(itemCount: 6,
+               itemBuilder: (ctx,index){
+                 return Padding(
+                   padding: const EdgeInsets.all(8.0),
+                   child:ArticleWidgets(),
+                 );
+               }),
+           ),
+            if(newsType== NewsType.topTrending)
+               SizedBox(height: size.height*0.6,
+                 child: Swiper(itemWidth: size.width*0.9,
+                   viewportFraction:0.9,
+                   duration: 500,
+                     autoplay: true,
+                     layout:  SwiperLayout.STACK,
+                     itemCount: 10,itemBuilder: (context,index){
+
+                   return LoadingWidget(newsType: newsType);}),
+               ),
+
+
+
+
           ],
         ),
       ),

@@ -34,6 +34,9 @@ dependencies:
   # UI
   cupertino_icons: ^1.0.2
   flutter_iconly: ^1.0.2
+  fancy_shimmer_image: ^2.0.3
+  shimmer: ^3.0.0
+  card_swiper: ^3.0.1
   # Management
   provider: ^6.0.3
   shared_preferences: ^2.0.15
