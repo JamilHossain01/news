@@ -193,7 +193,8 @@ class _HomeScreenState extends State<HomeScreen> {
                      layout:  SwiperLayout.STACK,
                      itemCount: 10,itemBuilder: (context,index){
 
-                   return LoadingWidget(newsType: newsType);}),
+                   return TopTrendingWidgets();}),
+                 //LoadingWidget(newsType: newsType)
                ),
 
 
