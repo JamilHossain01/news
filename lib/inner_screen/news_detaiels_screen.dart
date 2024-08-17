@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../services/utils.dart';
@@ -12,13 +13,13 @@ class NewsDetailsWebView extends StatefulWidget {
 }
 
 class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
-  late final WebViewController controller;
+  late final WebViewController _webViewController;
   double _progress = 0;
 
   @override
   void initState() {
     super.initState();
-    controller = WebViewController()
+    _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.disabled)
       ..setNavigationDelegate(NavigationDelegate(
         onProgress: (progress) {
@@ -33,26 +34,81 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "News Details",
-          style: TextStyle(color: Colors.blue),
-        ),
-        backgroundColor: Colors.red,
-      ),
-      body: Column(
-        children: [
-          _progress < 1.0
-              ? LinearProgressIndicator(
-                  value: _progress,
-                )
-              : const SizedBox.shrink(),
-          Expanded(
-            child: WebViewWidget(controller: controller),
+    return WillPopScope(
+      onWillPop: () async {
+        if (await _webViewController.canGoBack()) {
+          _webViewController.goBack();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "URL",
+            style: TextStyle(color: Colors.black),
           ),
-        ],
+          backgroundColor: Colors.white,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(IconlyLight.arrowLeft2)),
+          actions: [
+            IconButton(
+              onPressed: () {
+                _showModalSheetFct();
+              },
+              icon: const Icon(Icons.more_horiz),
+            ),
+          ],
+        ),
+        body: Column(mainAxisSize: MainAxisSize.min,
+          children: [
+            _progress < 1.0
+                ? LinearProgressIndicator(
+                    value: _progress,
+                  )
+                : const SizedBox.shrink(),
+            Expanded(
+              child: WebViewWidget(controller: _webViewController),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _showModalSheetFct() async {
+    await showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        )
+      ),
+        context: context,
+        builder: (context) {
+          return Container(
+
+            decoration: BoxDecoration(color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(40)
+              ),
+
+              
+            ),
+            child: Column(
+              children: [
+                SizedBox(height: 10,),
+                Container(
+                  height: 4,
+                  width: 25,
+                  color: Colors.grey,
+                )
+              ],
+            ),
+          );
+        });
   }
 }
