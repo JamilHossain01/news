@@ -15,3 +15,15 @@ enum SortByEnum{
   popularity,
 }
 TextStyle smallTextStyle = GoogleFonts.montserrat(fontSize: 15);
+
+List<String> searchKeyword =[
+  'Football',
+  'Hockey',
+  'Netflix',
+  'Cricket',
+  'Top news',
+  'daily-star',
+  'flutter',
+  'bloc',
+  'get x'
+];

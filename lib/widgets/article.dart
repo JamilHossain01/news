@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:news71_app/consts/vars.dart';
+import 'package:news71_app/inner_screen/news_detaiels_screen.dart';
+import 'package:page_transition/page_transition.dart';
 
 class ArticleWidgets extends StatelessWidget {
   const ArticleWidgets({super.key});
@@ -74,7 +76,16 @@ class ArticleWidgets extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.link)),
+                                  onPressed: () {Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: NewsDetailsWebView(),
+                                        inheritTheme: true,
+                                        ctx: context),
+                                  );
+
+                                  }, icon: Icon(Icons.link)),
                               Text(
                                 '27/6/2024 ON 3:47',
                                 style: smallTextStyle,

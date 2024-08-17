@@ -20,19 +20,14 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
     super.initState();
     controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.disabled)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (progress) {
-            setState(() {
-              _progress = progress/100;
-            });
-          },
-        )
-      )
-      ..loadRequest(Uri.parse("https://github.com/JamilHossain01/news")
-
-      );
-
+      ..setNavigationDelegate(NavigationDelegate(
+        onProgress: (progress) {
+          setState(() {
+            _progress = progress / 100;
+          });
+        },
+      ))
+      ..loadRequest(Uri.parse("https://github.com/JamilHossain01/news"));
   }
 
   @override
@@ -40,19 +35,18 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
     final Color color = Utils(context).getColor;
     return Scaffold(
       appBar: AppBar(
-        title: Text("News Details"),
+        title: const Text("News Details"),
         backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
-          _progress<1.0?LinearProgressIndicator(value: _progress,):SizedBox.shrink(),
-
+          _progress < 1.0
+              ? LinearProgressIndicator(
+                  value: _progress,
+                )
+              : const SizedBox.shrink(),
           Expanded(
-            child: WebViewWidget(
-              controller: controller
-
-
-            ),
+            child: WebViewWidget(controller: controller),
           ),
         ],
       ),

@@ -9,8 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:news71_app/consts/vars.dart';
 import 'package:news71_app/services/utils.dart';
 import 'package:news71_app/widgets/drawer_widgets.dart';
+import 'package:news71_app/inner_screen/search_screen.dart';
 import 'package:news71_app/widgets/tabs.dart';
 import 'package:news71_app/widgets/top_trending_widgets.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
@@ -49,9 +51,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    child: const SearchScreen(),
+                    inheritTheme: true,
+                    ctx: context),
+              );
+            },
             icon: Icon(IconlyLight.search),
-          )
+          ),
         ],
       ),
       drawer: DrawerWidget(),
@@ -160,46 +171,49 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-            newsType==NewsType.topTrending?Container(): Align(
-              alignment: Alignment.topRight,
-              child: Material(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(5),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: DropdownButton(
-                    value: sortBy,
-                    items: dropDownItems,
-                    onChanged: (value) {},
+            newsType == NewsType.topTrending
+                ? Container()
+                : Align(
+                    alignment: Alignment.topRight,
+                    child: Material(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(5),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: DropdownButton(
+                          value: sortBy,
+                          items: dropDownItems,
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+            if (newsType == NewsType.allNews)
+              Expanded(
+                child: ListView.builder(
+                    itemCount: 6,
+                    itemBuilder: (ctx, index) {
+                      return const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: ArticleWidgets(),
+                      );
+                    }),
               ),
-            ),
-
-           if(newsType==NewsType.allNews) Expanded(child: ListView.builder(itemCount: 6,
-               itemBuilder: (ctx,index){
-                 return Padding(
-                   padding: const EdgeInsets.all(8.0),
-                   child:ArticleWidgets(),
-                 );
-               }),
-           ),
-            if(newsType== NewsType.topTrending)
-               SizedBox(height: size.height*0.6,
-                 child: Swiper(itemWidth: size.width*0.9,
-                   viewportFraction:0.9,
-                   duration: 500,
-                     autoplay: true,
-                     layout:  SwiperLayout.STACK,
-                     itemCount: 10,itemBuilder: (context,index){
-
-                   return TopTrendingWidgets();}),
-                 //LoadingWidget(newsType: newsType)
-               ),
-
-
-
-
+            if (newsType == NewsType.topTrending)
+              SizedBox(
+                height: size.height * 0.6,
+                child: Swiper(
+                    itemWidth: size.width * 0.9,
+                    viewportFraction: 0.9,
+                    duration: 500,
+                    autoplay: true,
+                    layout: SwiperLayout.STACK,
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return const TopTrendingWidgets();
+                    }),
+                //LoadingWidget(newsType: newsType)
+              ),
           ],
         ),
       ),

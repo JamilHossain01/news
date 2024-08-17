@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news71_app/inner_screen/bookmark_screen.dart';
 import 'package:news71_app/services/utils.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
+import '../inner_screen/search_screen.dart';
 import '../providers/theme_provider.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -53,7 +56,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ListTileWidget(
               label: 'Bookmark',
               icon: IconlyBold.bookmark,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: BookMarkScreen(),
+                      inheritTheme: true,
+                      ctx: context),
+                );
+              },
             ),
             Divider(
               thickness: 1,
