@@ -35,8 +35,11 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
     final Color color = Utils(context).getColor;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("News Details"),
-        backgroundColor: Colors.white,
+        title: const Text(
+          "News Details",
+          style: TextStyle(color: Colors.blue),
+        ),
+        backgroundColor: Colors.red,
       ),
       body: Column(
         children: [
