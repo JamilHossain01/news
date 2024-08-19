@@ -104,7 +104,7 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
                 Container(
                   height: 4,
                   width: 25,
-                  color: Colors.grey,
+                  color: Colors.black,
                 )
               ],
             ),
