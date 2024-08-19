@@ -100,11 +100,11 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
             ),
             child: Column(
               children: [
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 Container(
                   height: 4,
                   width: 25,
-                  color: Colors.black,
+                  color: Colors.grey,
                 )
               ],
             ),
