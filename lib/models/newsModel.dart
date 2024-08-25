@@ -1,3 +1,4 @@
+import 'package:news71_app/services/global_method.dart';
 import 'package:reading_time/reading_time.dart';
 
 class NewsModel {
@@ -11,6 +12,7 @@ class NewsModel {
   String publishedAt;
   String content;
   String readingTimeText;
+  String dateToShow;
 
   NewsModel({
     required this.newsID,
@@ -23,6 +25,7 @@ class NewsModel {
     required this.publishedAt,
     required this.content,
     required this.readingTimeText,
+    required this.dateToShow,
   });
 
   // Factory constructor to create a NewsModel from JSON
@@ -30,6 +33,11 @@ class NewsModel {
     final title = json["title"] ?? "";
     final description = json["description"] ?? "";
     final content = json["content"] ?? "";
+    String dateToShow = "";
+    if (json["publishedAt"] != null){
+      dateToShow = GlobalMethods.formattedDateText(json["publishedAt"]);
+
+    }
 
     return NewsModel(
       newsID: json['source']["id"] ?? "",
@@ -41,6 +49,7 @@ class NewsModel {
       urlToImage: json["urlToImage"] ??
           "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
       publishedAt: json["publishedAt"] ?? "",
+      dateToShow :dateToShow,
       content: content,
       readingTimeText: readingTime(title + description + content).msg,
     );
@@ -66,6 +75,7 @@ class NewsModel {
     data['publishedAt'] = publishedAt;
     data['content'] = content;
     data['readingTimeText'] = readingTimeText;
+    data['dateToShow'] = dateToShow;
     return data;
   }
 }
