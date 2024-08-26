@@ -14,7 +14,7 @@ class NewsDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('By Author'),
+        title: const Text('By Author'),
       ),
       body: ListView(
         children: [
@@ -25,7 +25,8 @@ class NewsDetailsScreen extends StatelessWidget {
               children: [
                 Text(
                   'Title' * 10,
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.w600),
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,48 +39,49 @@ class NewsDetailsScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                       child: Padding(
-                        padding:  EdgeInsets.only(bottom: 25),
+                        padding: const EdgeInsets.only(bottom: 25),
                         child: FancyShimmerImage(
-                          width: double.infinity,
-
+                            width: double.infinity,
                             imageUrl:
-                            'https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1'),
+                                'https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1'),
                       ),
-
-                    ),Positioned(bottom:0,
+                    ),
+                    Positioned(
+                      bottom: 0,
                       right: 10,
                       child: Padding(
-                        padding: EdgeInsets.only(right: 10),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Row(
                           children: [
-
                             GestureDetector(
-                                onTap: (){},
-                                child:
-                                const Card(shape: CircleBorder(),elevation: 10,
+                                onTap: () {},
+                                child: const Card(
+                                  shape: CircleBorder(),
+                                  elevation: 10,
                                   child: Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Icon(IconlyLight.send),
                                   ),
                                 )),
                             GestureDetector(
-                              onTap: (){
-                                print('ok');
-                              },
-                              child:
-                              const Card(shape: CircleBorder(),elevation: 10,
+                                onTap: () {
+                                  print('ok');
+                                },
+                                child: const Card(
+                                  shape: CircleBorder(),
+                                  elevation: 10,
                                   child: Padding(
                                     padding: EdgeInsets.all(8.0),
                                     child: Icon(IconlyLight.bookmark),
                                   ),
-                            )),
+                                )),
                           ],
                         ),
                       ),
                     ),
                   ],
                 ),
-                TextContent(
+                const TextContent(
                     label: 'Description',
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
@@ -87,7 +89,7 @@ class NewsDetailsScreen extends StatelessWidget {
                     label: 'Description' * 10,
                     fontSize: 20,
                     fontWeight: FontWeight.normal),
-                TextContent(
+                const TextContent(
                     label: 'Content',
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
@@ -95,7 +97,6 @@ class NewsDetailsScreen extends StatelessWidget {
                     label: 'Content' * 10,
                     fontSize: 20,
                     fontWeight: FontWeight.normal),
-
               ],
             ),
           ),

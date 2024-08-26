@@ -61,7 +61,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   context,
                   PageTransition(
                       type: PageTransitionType.rightToLeft,
-                      child: BookMarkScreen(),
+                      child:BookmarkScreen(),
                       inheritTheme: true,
                       ctx: context),
                 );

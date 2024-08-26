@@ -1,45 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:news71_app/services/utils.dart';
+import 'package:news71_app/widgets/empty_screen_widget.dart';
 
-import '../widgets/article.dart';
+import '../services/utils.dart';
 
-class BookMarkScreen extends StatefulWidget {
-  const BookMarkScreen({super.key});
+class BookmarkScreen extends StatefulWidget {
+  const BookmarkScreen({Key? key}) : super(key: key);
 
   @override
-  State<BookMarkScreen> createState() => _BookMarkScreenState();
+  State<BookmarkScreen> createState() => _BookmarkScreenState();
 }
 
-class _BookMarkScreenState extends State<BookMarkScreen> {
-
-
+class _BookmarkScreenState extends State<BookmarkScreen> {
   @override
   Widget build(BuildContext context) {
-    Color color = Utils(context).getColor;
-
+    Size size = Utils(context).getScreenSize;
+    final Color color = Utils(context).getColor;
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: color),
-        backgroundColor: Theme.of(context).primaryColor,
-        title: Center(
-          child: Text(
-            'Bookmark',
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: color),
+          elevation: 0,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          centerTitle: true,
+          title: Text(
+            'Bookmarks',
             style: GoogleFonts.lobster(
                 textStyle:
-                TextStyle(color: color, letterSpacing: 0.6, fontSize: 20)),
+                TextStyle(color: color, fontSize: 20, letterSpacing: 0.6)),
           ),
         ),
-      ),
-      body: ListView.builder(
-          itemCount: 6,
-          itemBuilder: (ctx, index) {
-            return const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ArticleWidgets(),
-            );
-          }),
-
+        body:const EmptyWidget(text:'ok', imagePath:"assets/images/no_news.png")
+      // ListView.builder(
+      //     itemCount: 20,
+      //     itemBuilder: (ctx, index) {
+      //       return const ArticlesWidget();
+      //     }),
     );
   }
 }

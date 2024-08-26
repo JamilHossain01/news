@@ -2,9 +2,13 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news71_app/consts/vars.dart';
 import 'package:news71_app/services/utils.dart';
+import 'package:page_transition/page_transition.dart';
+
+import '../inner_screen/news_detaiels_webview.dart';
 
 class TopTrendingWidgets extends StatefulWidget {
-  const TopTrendingWidgets({super.key});
+  const TopTrendingWidgets({super.key, required this.url, required this.imageUrl});
+  final String url,imageUrl;
 
   @override
   State<TopTrendingWidgets> createState() => _TopTrendingWidgetsState();
@@ -26,9 +30,10 @@ class _TopTrendingWidgetsState extends State<TopTrendingWidgets> {
           ),
           height: size.height * 0.5,
           width: double.infinity,
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 18,
               ),
               ClipRRect(
@@ -39,12 +44,24 @@ class _TopTrendingWidgetsState extends State<TopTrendingWidgets> {
                     imageUrl:
                         'https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1'),
               ),
-              Text('Title',style:TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
-
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              const Text(
+                'Title',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            child:  NewsDetailsWebView(url:widget.url,),
+                            inheritTheme: true,
+                            ctx: context),
+                      );
+                    },
                     icon: const Icon(Icons.link),
                   ),
                   const Text('20-07-2024'),

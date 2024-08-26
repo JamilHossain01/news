@@ -1,29 +1,25 @@
-import 'dart:ui';
-
-import 'package:flutter/src/painting/text_style.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-enum NewsType{
+enum NewsType {
   topTrending,
   allNews,
-
 }
 
-enum SortByEnum{
-  relevancy,
-  published,
-  popularity,
+enum SortByEnum {
+  relevancy, // articles more closely related to q come first.
+  popularity, // articles from popular sources and publishers come first.
+  publishedAt, published, // newest articles come first.
 }
-TextStyle smallTextStyle = GoogleFonts.montserrat(fontSize: 15);
 
-List<String> searchKeyword =[
-  'Football',
-  'Hockey',
-  'Netflix',
-  'Cricket',
-  'Top news',
-  'daily-star',
-  'flutter',
-  'bloc',
-  'get x'
+const List<String> searchKeywords = [
+  "Football",
+  "Flutter",
+  "Python",
+  "Weather",
+  "Crypto",
+  "Bitcoin",
+  "Youtube",
+  "Netflix",
+  "Meta"
 ];

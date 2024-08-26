@@ -131,7 +131,7 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
                   try {
 
                     await Share.share(
-                      'Check out this website: $url',
+                      'widget.url',
                       subject: 'Look what I found!',
                     );
                   } catch (err) {
@@ -144,8 +144,8 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
                 title: const Text('Open in browser'),
                 onTap: () async {
                   try {
-                    if (!await launchUrl(Uri.parse(url))) {
-                      throw 'Could not launch $url';
+                    if (!await launchUrl(Uri.parse(widget.url))) {
+                      throw 'Could not launch $widget.url';
                     }
                   } catch (err) {
                     log('Error launching URL: ${err.toString()}');

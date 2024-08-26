@@ -1,7 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:news71_app/widgets/vertical_space.dart';
 
 import 'package:shimmer/shimmer.dart';
 
@@ -33,36 +32,36 @@ class _LoadingWidgetState extends State<LoadingWidget> {
     Size size = Utils(context).getScreenSize;
     return widget.newsType == NewsType.topTrending
         ? Swiper(
-            autoplayDelay: 8000,
-            autoplay: true,
-            itemWidth: size.width * 0.9,
-            layout: SwiperLayout.STACK,
-            viewportFraction: 0.9,
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return TopTrendingLoadingWidget(
-                  baseShimmerColor: baseShimmerColor,
-                  highlightShimmerColor: highlightShimmerColor,
-                  size: size,
-                  widgetShimmerColor: widgetShimmerColor,
-                  borderRadius: borderRadius);
-            },
-          )
+      autoplayDelay: 8000,
+      autoplay: true,
+      itemWidth: size.width * 0.9,
+      layout: SwiperLayout.STACK,
+      viewportFraction: 0.9,
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return TopTrendingLoadingWidget(
+            baseShimmerColor: baseShimmerColor,
+            highlightShimmerColor: highlightShimmerColor,
+            size: size,
+            widgetShimmerColor: widgetShimmerColor,
+            borderRadius: borderRadius);
+      },
+    )
         : Expanded(
-            child: ListView.builder(
-                // you can add these 2 lines for better performance
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 20,
-                itemBuilder: (ctx, index) {
-                  return ArticlesShimmerEffectWidget(
-                      baseShimmerColor: baseShimmerColor,
-                      highlightShimmerColor: highlightShimmerColor,
-                      widgetShimmerColor: widgetShimmerColor,
-                      size: size,
-                      borderRadius: borderRadius);
-                }),
-          );
+      child: ListView.builder(
+        // you can add these 2 lines for better performance
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 20,
+          itemBuilder: (ctx, index) {
+            return ArticlesShimmerEffectWidget(
+                baseShimmerColor: baseShimmerColor,
+                highlightShimmerColor: highlightShimmerColor,
+                widgetShimmerColor: widgetShimmerColor,
+                size: size,
+                borderRadius: borderRadius);
+          }),
+    );
   }
 }
 
@@ -213,7 +212,7 @@ class ArticlesShimmerEffectWidget extends StatelessWidget {
                               color: widgetShimmerColor,
                             ),
                           ),
-                          const VerticalSpacing(5),
+                          SizedBox(height: 5,),
                           Align(
                             alignment: Alignment.topRight,
                             child: Container(

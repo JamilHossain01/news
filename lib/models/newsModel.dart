@@ -1,22 +1,23 @@
-import 'package:flutter/foundation.dart';
-import 'package:news71_app/services/global_method.dart';
+import 'package:flutter/material.dart';
 import 'package:reading_time/reading_time.dart';
 
-class NewsModel  with ChangeNotifier {
-  String newsID;
-  String sourceName;
-  String authorName;
-  String title;
-  String description;
-  String url;
-  String urlToImage;
-  String publishedAt;
-  String content;
-  String readingTimeText;
-  String dateToShow;
+import '../services/global_method.dart';
+
+class NewsModel with ChangeNotifier {
+  String newsId,
+      sourceName,
+      authorName,
+      title,
+      description,
+      url,
+      urlToImage,
+      publishedAt,
+      dateToShow,
+      content,
+      readingTimeText;
 
   NewsModel({
-    required this.newsID,
+    required this.newsId,
     required this.sourceName,
     required this.authorName,
     required this.title,
@@ -25,23 +26,21 @@ class NewsModel  with ChangeNotifier {
     required this.urlToImage,
     required this.publishedAt,
     required this.content,
-    required this.readingTimeText,
     required this.dateToShow,
+    required this.readingTimeText,
   });
 
-  // Factory constructor to create a NewsModel from JSON
-  factory NewsModel.fromJson(Map<String, dynamic> json) {
-    final title = json["title"] ?? "";
-    final description = json["description"] ?? "";
-    final content = json["content"] ?? "";
+  factory NewsModel.fromJson(dynamic json) {
+    String title = json["title"] ?? "";
+    String content = json["content"] ?? "";
+    String description = json["description"] ?? "";
+
     String dateToShow = "";
-    if (json["publishedAt"] != null){
+    if (json["publishedAt"] != null) {
       dateToShow = GlobalMethods.formattedDateText(json["publishedAt"]);
-
     }
-
     return NewsModel(
-      newsID: json['source']["id"] ?? "",
+      newsId: json["source"]["id"] ?? "",
       sourceName: json["source"]["name"] ?? "",
       authorName: json["author"] ?? "",
       title: title,
@@ -50,33 +49,36 @@ class NewsModel  with ChangeNotifier {
       urlToImage: json["urlToImage"] ??
           "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
       publishedAt: json["publishedAt"] ?? "",
-      dateToShow :dateToShow,
       content: content,
+      dateToShow: dateToShow,
       readingTimeText: readingTime(title + description + content).msg,
     );
   }
 
-  // Static method to create a list of NewsModel from a snapshot
-  static List<NewsModel> newsFromSnapshot(List<dynamic> newsSnapShot) {
-    return newsSnapShot.map((json) {
+  static List<NewsModel> newsFromSnapshot(List newSnapshot) {
+    return newSnapshot.map((json) {
       return NewsModel.fromJson(json);
     }).toList();
   }
 
-  // Method to convert the NewsModel to JSON
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    data['newsID'] = newsID;
-    data['sourceName'] = sourceName;
-    data['authorName'] = authorName;
-    data['title'] = title;
-    data['description'] = description;
-    data['url'] = url;
-    data['urlToImage'] = urlToImage;
-    data['publishedAt'] = publishedAt;
-    data['content'] = content;
-    data['readingTimeText'] = readingTimeText;
-    data['dateToShow'] = dateToShow;
+    data["NewsId"] = newsId;
+    data["sourceName"] = sourceName;
+    data["authorName"] = authorName;
+    data["title"] = title;
+    data["description"] = description;
+    data["url"] = url;
+    data["urlToImage"] = urlToImage;
+    data["publishedAt"] = publishedAt;
+    data["dateToShow"] = dateToShow;
+    data["content"] = content;
+    data["readingTimeText"] = readingTimeText;
     return data;
   }
+
+// @override
+// String toString() {
+//   return "news {newid: $newsId}";
+// }
 }

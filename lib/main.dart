@@ -1,5 +1,7 @@
 //Packages
 import 'package:flutter/material.dart';
+import 'package:news71_app/inner_screen/blog_details.dart';
+import 'package:news71_app/providers/news_provider.dart';
 import 'package:provider/provider.dart';
 
 //Screens
@@ -46,6 +48,9 @@ class _MyAppState extends State<MyApp> {
           //Notify about theme changes
           return themeChangeProvider;
         }),
+        ChangeNotifierProvider(
+          create: (context) => NewsProvider(),
+        ),
       ],
       child:
           //Notify about theme changes
@@ -55,7 +60,9 @@ class _MyAppState extends State<MyApp> {
           title: 'Blog',
           theme: Styles.themeData(themeChangeProvider.getDarkTheme, context),
           home: const HomeScreen(),
-          routes: {},
+          routes: {
+            NewsDetailsScreen.routeName: (context) => NewsDetailsScreen(),
+          },
         );
       }),
     );
