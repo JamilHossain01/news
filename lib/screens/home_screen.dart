@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news71_app/consts/vars.dart';
+import 'package:news71_app/providers/news_provider.dart';
 import 'package:news71_app/services/news_api.dart';
 import 'package:news71_app/services/utils.dart';
 import 'package:news71_app/widgets/drawer_widgets.dart';
@@ -17,7 +18,8 @@ import 'package:news71_app/widgets/top_trending_widgets.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
-import '../methods/newsModel.dart';
+
+import '../models/newsModel.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/article.dart';
 import '../widgets/loading_widget.dart';
@@ -36,22 +38,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Added loading state
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    getNewsList(); // Fetch news on dependencies change
-  }
-
-  Future<List<NewsModel>> getNewsList() async {
-    List<NewsModel> newsList = await NewsApiServices().getAllNews();
-    return newsList;
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   getNewsList(); // Fetch news on dependencies change
+  // }
+  //
+  // Future<List<NewsModel>> getNewsList() async {
+  //   List<NewsModel> newsList = await NewsApiServices().getAllNews();
+  //   return newsList;
+  // }
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final Color color = Utils(context).getColor;
     final Size size = Utils(context).getScreenSize;
+    final newsProvider = Provider.of<NewsProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -204,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
           FutureBuilder<List<NewsModel>>(
-              future: getNewsList(),
+              future: newsProvider.fetchAllNews(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return LoadingWidget(
@@ -213,26 +216,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else if (snapshot.hasError) {
                   return Expanded(
                     child: EmptyWidget(
-                        text: 'ok ${snapshot.error}',
-                        imagePath: 'assets/images/no_images'),
+                      text: 'Error: ${snapshot.error}',
+                      imagePath: 'assets/images/no_news.png',
+                    ),
                   );
-                } else if (snapshot.data == null) {
-                  return Expanded(
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Expanded(
                     child: EmptyWidget(
-                        text: 'ok ', imagePath: 'assets/images/no_images'),
+                      text: 'No news available',
+                      imagePath: 'assets/images/no_news.png',
+                    ),
                   );
+
                 }
                 return newsType == NewsType.allNews
                     ? Expanded(
                         child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (ctx, index) {
-                              return ArticleWidgets(
-                                imageUrl: snapshot.data![index].urlToImage,
-                                title: snapshot.data![index].title,
-                                dateShow: 'DateShow',
-                                url:snapshot.data![index].url,
-                                readingTimeText: snapshot.data![index].readingTimeText,
+                              return ChangeNotifierProvider.value(
+                                value: snapshot.data![index],
+                                child: ArticleWidgets(
+                                  // imageUrl: snapshot.data![index].urlToImage,
+                                  // title: snapshot.data![index].title,
+                                  // dateShow:snapshot.data![index].dateToShow,
+                                  // url:snapshot.data![index].url,
+                                  // readingTimeText: snapshot.data![index].readingTimeText,
+                                ),
                               );
                             }),
                       )

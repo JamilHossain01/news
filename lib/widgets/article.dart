@@ -1,19 +1,22 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news71_app/consts/vars.dart';
-import 'package:news71_app/inner_screen/news_detaiels_screen.dart';
+import 'package:news71_app/inner_screen/news_detaiels_webview.dart';
+import 'package:news71_app/models/newsModel.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 import '../inner_screen/blog_details.dart';
 
 class ArticleWidgets extends StatelessWidget {
-  const ArticleWidgets({Key? key, required this.imageUrl, required this.title}) : super(key: key);
-  final String imageUrl;
-  final String title;
+  const ArticleWidgets({Key? key, });
+  //final String imageUrl,title,dateShow,url,readingTimeText;
+
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final newsModelProvider=Provider.of<NewsModel>(context);
     return Material(
       color: Theme.of(context).cardColor,
       child: GestureDetector(
@@ -53,7 +56,7 @@ class ArticleWidgets extends StatelessWidget {
                         height: size.height*0.12,
                         width: size.height*0.12,
                         boxFit: BoxFit.fill,
-                        imageUrl: imageUrl,
+                        imageUrl:newsModelProvider.urlToImage,
 
                       ),
                     ),
@@ -61,7 +64,7 @@ class ArticleWidgets extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start, // Align text to start
                         children: [
-                          Text(title,
+                          Text(newsModelProvider.title,
                             textAlign: TextAlign.justify,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -70,7 +73,7 @@ class ArticleWidgets extends StatelessWidget {
                           Align(
                             alignment: Alignment.topRight,
                             child: Text(
-                              '🕒 Reading time',
+                              '🕒 ${newsModelProvider.readingTimeText}',
                               style: smallTextStyle,
                             ),
                           ),
@@ -83,7 +86,7 @@ class ArticleWidgets extends StatelessWidget {
                                     context,
                                     PageTransition(
                                       type: PageTransitionType.rightToLeft,
-                                      child: NewsDetailsWebView(),
+                                      child: NewsDetailsWebView(url:newsModelProvider.url,),
                                       inheritTheme: true,
                                       ctx: context,
                                     ),
@@ -92,7 +95,7 @@ class ArticleWidgets extends StatelessWidget {
                                 icon: Icon(Icons.link),
                               ),
                               Text(
-                                '27/6/2024 ON 3:47',
+                                newsModelProvider.dateToShow,
                                 style: smallTextStyle,
                               ),
                             ],
