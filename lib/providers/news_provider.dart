@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../models/newsModel.dart';
 import '../services/news_api.dart';
@@ -21,6 +22,10 @@ class NewsProvider with ChangeNotifier {
   Future<List<NewsModel>>fetchTopTrending() async{
     newsList =
     await NewsAPiServices.getTopTrending();
+    return newsList;
+  }
+  Future<List<NewsModel>> searchNewsProvider({required String query})async{
+    newsList = await NewsAPiServices.searchNews(query: query);
     return newsList;
   }
 
