@@ -77,6 +77,8 @@ class NewsModel with ChangeNotifier {
     return data;
   }
 
+  findByDate({required String publishedAt}) {}
+
 // @override
 // String toString() {
 //   return "news {newid: $newsId}";

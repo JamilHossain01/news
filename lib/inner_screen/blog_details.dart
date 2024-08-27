@@ -7,6 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:news71_app/models/newsModel.dart';
 import 'package:news71_app/providers/news_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../services/global_method.dart';
 
 class NewsDetailsScreen extends StatelessWidget {
   static const routeName = "/NewsDetailsScreen";
@@ -47,9 +50,11 @@ class NewsDetailsScreen extends StatelessWidget {
                     SizedBox(
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 25),
-                        child: FancyShimmerImage(
-                            width: double.infinity,
-                            imageUrl: currentNews.urlToImage),
+                        child: Hero(tag: currentNews.publishedAt,
+                          child: FancyShimmerImage(
+                              width: double.infinity,
+                              imageUrl: currentNews.urlToImage),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -60,7 +65,18 @@ class NewsDetailsScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             GestureDetector(
-                                onTap: () {},
+                                onTap: () async {
+                                  try {
+
+                                    await Share.share(
+                                      currentNews.url,
+                                      subject: 'Look what I found!',
+                                    );
+                                  } catch (err) {
+                                    GlobalMethods.errorDialog(context: context, errorMessage:err.toString());
+                                  }
+
+                                },
                                 child: const Card(
                                   shape: CircleBorder(),
                                   elevation: 10,

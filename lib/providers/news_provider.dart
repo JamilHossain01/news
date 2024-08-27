@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 
 import '../models/newsModel.dart';
@@ -14,6 +16,11 @@ class NewsProvider with ChangeNotifier {
       {required int pageIndex, required String sortBy}) async {
     newsList =
     await NewsAPiServices.getAllNews(page: pageIndex, sortBy: sortBy);
+    return newsList;
+  }
+  Future<List<NewsModel>>fetchTopTrending() async{
+    newsList =
+    await NewsAPiServices.getTopTrending();
     return newsList;
   }
 
