@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news71_app/models/newsModel.dart';
+import 'package:news71_app/providers/news_provider.dart';
+import 'package:provider/provider.dart';
 
 class NewsDetailsScreen extends StatelessWidget {
   static const routeName = "/NewsDetailsScreen";
@@ -12,9 +15,13 @@ class NewsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final newsProvider = Provider.of<NewsProvider>(context);
+    final publishedAt = ModalRoute.of(context)!.settings.arguments as String;
+    final currentNews = newsProvider.findByDate(publishedAt: publishedAt);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('By Author'),
+        title: Text('By ${currentNews.authorName}'),
       ),
       body: ListView(
         children: [
@@ -24,15 +31,15 @@ class NewsDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Title' * 10,
+                  currentNews.title,
                   style: const TextStyle(
                       fontSize: 25, fontWeight: FontWeight.w600),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('20/7/2024'),
-                    Text('Reading Time text'),
+                    Text(currentNews.dateToShow),
+                    Text(currentNews.readingTimeText),
                   ],
                 ),
                 Stack(
@@ -42,8 +49,7 @@ class NewsDetailsScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(bottom: 25),
                         child: FancyShimmerImage(
                             width: double.infinity,
-                            imageUrl:
-                                'https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1'),
+                            imageUrl: currentNews.urlToImage),
                       ),
                     ),
                     Positioned(
@@ -86,15 +92,15 @@ class NewsDetailsScreen extends StatelessWidget {
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
                 TextContent(
-                    label: 'Description' * 10,
+                    label: currentNews.description,
                     fontSize: 20,
                     fontWeight: FontWeight.normal),
-                const TextContent(
-                    label: 'Content',
+                TextContent(
+                    label: currentNews.content,
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
                 TextContent(
-                    label: 'Content' * 10,
+                    label: currentNews.content,
                     fontSize: 20,
                     fontWeight: FontWeight.normal),
               ],
