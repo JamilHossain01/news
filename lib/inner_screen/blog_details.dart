@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news71_app/models/newsModel.dart';
+import 'package:news71_app/providers/bookmark_provider.dart';
 import 'package:news71_app/providers/news_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -16,10 +17,16 @@ class NewsDetailsScreen extends StatelessWidget {
 
   const NewsDetailsScreen({super.key});
 
+  final bool isInBookmarks = false;
+
   @override
   Widget build(BuildContext context) {
     final newsProvider = Provider.of<NewsProvider>(context);
-    final publishedAt = ModalRoute.of(context)!.settings.arguments as String;
+    final newsBookmarkProvider = Provider.of<BookMarkProvider>(context);
+    final publishedAt = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as String;
     final currentNews = newsProvider.findByDate(publishedAt: publishedAt);
 
     return Scaffold(
@@ -67,15 +74,14 @@ class NewsDetailsScreen extends StatelessWidget {
                             GestureDetector(
                                 onTap: () async {
                                   try {
-
                                     await Share.share(
                                       currentNews.url,
                                       subject: 'Look what I found!',
                                     );
                                   } catch (err) {
-                                    GlobalMethods.errorDialog(context: context, errorMessage:err.toString());
+                                    GlobalMethods.errorDialog(context: context,
+                                        errorMessage: err.toString());
                                   }
-
                                 },
                                 child: const Card(
                                   shape: CircleBorder(),
@@ -86,8 +92,16 @@ class NewsDetailsScreen extends StatelessWidget {
                                   ),
                                 )),
                             GestureDetector(
-                                onTap: () {
-                                  print('ok');
+                                onTap: () async {
+                                  if (isInBookmarks) {
+                                    await newsBookmarkProvider
+                                        .deleteToBookmark();
+                                  } else {
+                                    await newsBookmarkProvider.addToBookmark(
+                                        newsModel: currentNews);
+                                    print('ok');
+                                  }
+
                                 },
                                 child: const Card(
                                   shape: CircleBorder(),

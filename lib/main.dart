@@ -1,19 +1,28 @@
-//Packages
+// Packages
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:news71_app/inner_screen/blog_details.dart';
-import 'package:news71_app/providers/news_provider.dart';
+import 'package:news71_app/providers/bookmark_provider.dart';
 import 'package:provider/provider.dart';
 
-//Screens
+// Screens
+import 'package:news71_app/inner_screen/blog_details.dart';
 import 'screens/home_screen.dart';
 
-//Consts
+// Consts
 import 'consts/theme_data.dart';
 
-//Providers
+// Providers
 import 'providers/theme_provider.dart';
+import 'providers/news_provider.dart';
 
-void main() {
+// Firebase options
+import 'firebase_options.dart'; // Import Firebase options
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // Initialize Firebase
+  );
   runApp(const MyApp());
 }
 
@@ -25,46 +34,47 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  //Need it to access the theme Provider
-  ThemeProvider themeChangeProvider = ThemeProvider();
+  // Need it to access the theme Provider
+  final ThemeProvider _themeChangeProvider = ThemeProvider();
 
   @override
   void initState() {
-    getCurrentAppTheme();
     super.initState();
+    _getCurrentAppTheme();
   }
 
-  //Fetch the current theme
-  void getCurrentAppTheme() async {
-    themeChangeProvider.setDarkTheme =
-        await themeChangeProvider.darkThemePreferences.getTheme();
+  // Fetch the current theme
+  void _getCurrentAppTheme() async {
+    _themeChangeProvider.setDarkTheme =
+    await _themeChangeProvider.darkThemePreferences.getTheme();
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) {
-          //Notify about theme changes
-          return themeChangeProvider;
-        }),
-        ChangeNotifierProvider(
-          create: (context) => NewsProvider(),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => _themeChangeProvider,
         ),
+        ChangeNotifierProvider<NewsProvider>(
+          create: (_) => NewsProvider(),
+        ),
+        ChangeNotifierProvider<BookMarkProvider>(create:(context) => BookMarkProvider(), )
       ],
-      child:
-          //Notify about theme changes
-          Consumer<ThemeProvider>(builder: (context, themeChangeProvider, ch) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Blog',
-          theme: Styles.themeData(themeChangeProvider.getDarkTheme, context),
-          home: const HomeScreen(),
-          routes: {
-            NewsDetailsScreen.routeName: (context) => NewsDetailsScreen(),
-          },
-        );
-      }),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeChangeProvider, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Blog',
+            theme: Styles.themeData(themeChangeProvider.getDarkTheme, context),
+            home: const HomeScreen(),
+            routes: {
+              NewsDetailsScreen.routeName: (context) =>
+              const NewsDetailsScreen(),
+            },
+          );
+        },
+      ),
     );
   }
 }
