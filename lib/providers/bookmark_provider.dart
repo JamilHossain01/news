@@ -9,11 +9,17 @@ import 'package:http/http.dart' as http;
 import 'package:news71_app/models/newsModel.dart';
 
 import '../models/bookMarks_Model.dart';
+import '../services/news_api.dart';
 
 class BookMarkProvider with ChangeNotifier {
   List<BookmarksModel> bookMarkList = [];
 
   List<BookmarksModel> get getbookMarkList {
+    return bookMarkList;
+  }
+
+  Future<List<BookmarksModel>> fetcBookmarks() async {
+    bookMarkList = await NewsAPiServices.getBookMarks() ?? [];
     return bookMarkList;
   }
 
@@ -33,13 +39,12 @@ class BookMarkProvider with ChangeNotifier {
   Future<void> deleteToBookmark() async {
     try {
       var uri =
-          Uri.https(BASEURL_FIREBASE, "Bookmarks/-O5SakYUMR6_1u_DGa6U.json");
+          Uri.https(BASEURL_FIREBASE, "Bookmarks.json");
       var response = await http.delete(
         uri,
       );
       // log('Response status: ${response.statusCode}');
       // log('Response body: ${response.body}' as num);
-
     } catch (error) {
       rethrow;
     }

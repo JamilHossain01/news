@@ -1,19 +1,21 @@
 import 'package:flutter/cupertino.dart';
 
 class BookmarksModel with ChangeNotifier {
-  String newsId,
-      sourceName,
-      authorName,
-      title,
-      description,
-      url,
-      urlToImage,
-      publishedAt,
-      dateToShow,
-      content,
-      readingTimeText;
+  final String bookmarkKey;
+  final String newsId;
+  final String sourceName;
+  final String authorName;
+  final String title;
+  final String description;
+  final String url;
+  final String urlToImage;
+  final String publishedAt;
+  final String dateToShow;
+  final String content;
+  final String readingTimeText;
 
   BookmarksModel({
+    required this.bookmarkKey,
     required this.newsId,
     required this.sourceName,
     required this.authorName,
@@ -27,8 +29,12 @@ class BookmarksModel with ChangeNotifier {
     required this.readingTimeText,
   });
 
-  factory BookmarksModel.fromJson(dynamic json) {
+  factory BookmarksModel.fromJson({
+    required dynamic json,
+    required String bookmarkKey,
+  }) {
     return BookmarksModel(
+      bookmarkKey: bookmarkKey,
       newsId: json['newsId'] ?? "",
       sourceName: json['sourceName'] ?? "",
       authorName: json['authorName'] ?? "",
@@ -44,14 +50,17 @@ class BookmarksModel with ChangeNotifier {
     );
   }
 
-  static List<BookmarksModel> bookmarksFromSnapshot(List newSnapshot) {
-    return newSnapshot.map((data) {
-      return BookmarksModel.fromJson(data);
+  static List<BookmarksModel> bookmarksFromSnapshot({
+    required dynamic json,
+    required List<String> allKeys,
+  }) {
+    return allKeys.map((key) {
+      return BookmarksModel.fromJson(json: json[key], bookmarkKey: key);
     }).toList();
   }
 
   @override
   String toString() {
-    return 'news {newsId: $newsId, sourceName: $sourceName, authorName: $authorName, title: $title, description: $description, url: $url, urlToImage: $urlToImage, publishedAt: $publishedAt, content: $content,}';
+    return 'news {newsId: $newsId, sourceName: $sourceName, authorName: $authorName, title: $title, description: $description, url: $url, urlToImage: $urlToImage, publishedAt: $publishedAt, content: $content, dateToShow: $dateToShow, readingTimeText: $readingTimeText}';
   }
 }
